@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kL1Pdjt90Ho=",
+  "dgSpecHash": "npxg3kH7Q9g=",
   "success": true,
-  "projectFilePath": "D:\\Code\\SampleRestAPI\\SampleRestAPI\\SampleRestAPI.csproj",
+  "projectFilePath": "D:\\Code\\SampleRestAPI\\SampleRestAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\BlueChestMimic\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\BlueChestMimic\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

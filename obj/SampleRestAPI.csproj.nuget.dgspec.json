@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Code\\SampleRestAPI\\SampleRestAPI\\SampleRestAPI.csproj": {}
+    "D:\\Code\\SampleRestAPI\\SampleRestAPI.csproj": {}
   },
   "projects": {
-    "D:\\Code\\SampleRestAPI\\SampleRestAPI\\SampleRestAPI.csproj": {
+    "D:\\Code\\SampleRestAPI\\SampleRestAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Code\\SampleRestAPI\\SampleRestAPI\\SampleRestAPI.csproj",
+        "projectUniqueName": "D:\\Code\\SampleRestAPI\\SampleRestAPI.csproj",
         "projectName": "SampleRestAPI",
-        "projectPath": "D:\\Code\\SampleRestAPI\\SampleRestAPI\\SampleRestAPI.csproj",
+        "projectPath": "D:\\Code\\SampleRestAPI\\SampleRestAPI.csproj",
         "packagesPath": "C:\\Users\\BlueChestMimic\\.nuget\\packages\\",
-        "outputPath": "D:\\Code\\SampleRestAPI\\SampleRestAPI\\obj\\",
+        "outputPath": "D:\\Code\\SampleRestAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
