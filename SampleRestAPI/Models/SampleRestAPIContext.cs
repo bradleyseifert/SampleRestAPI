@@ -1,0 +1,15 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SampleRestAPI.Models;
+
+namespace SampleRestAPI.Models
+{
+    public class SampleRestAPIContext : DbContext
+    {
+        public SampleRestAPIContext(DbContextOptions<SampleRestAPIContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<TodoItem> TodoItems { get; set; } = null!;
+    }
+}
