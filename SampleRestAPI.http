@@ -1,0 +1,43 @@
+@SampleRestAPI_HostAddress = https://localhost:7221
+
+GET {{SampleRestAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+POST {{SampleRestAPI_HostAddress}}/api/todoitems
+Content-Type: application/json
+
+{
+  "name": "walk dog",
+  "isComplete": true,
+  "secret": "test"
+}
+
+###
+
+GET {{SampleRestAPI_HostAddress}}/api/todoitems
+
+###
+
+@id=1
+GET {{SampleRestAPI_HostAddress}}/api/todoitems/{{id}}
+
+###
+
+@id=1
+PUT {{SampleRestAPI_HostAddress}}/api/todoitems/{{id}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "feed fish",
+  "isComplete": true
+}
+
+###
+
+@id=1
+DELETE {{SampleRestAPI_HostAddress}}/api/todoitems/{{id}}
+
+###

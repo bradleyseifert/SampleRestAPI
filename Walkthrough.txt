@@ -1,0 +1,83 @@
+Walkthrough of steps to get to this point:
+
+Starting with the guide on https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio
+
+Follow the instructions for the project creation (I chose to keep controllers on. It makes things easier long term IMO), Nuget package, and running the project.
+
+For connecting when we run the project by default we have an https port of 7221.
+
+So if we open up Postman we can put in a get method (also in the http file) with the following URL: https://localhost:7221/weatherforecast as a GET method.
+
+This gives the following default response information as of my sample run:
+
+[
+    {
+        "date": "2025-11-06",
+        "temperatureC": 11,
+        "temperatureF": 51,
+        "summary": "Balmy"
+    },
+    {
+        "date": "2025-11-07",
+        "temperatureC": 32,
+        "temperatureF": 89,
+        "summary": "Chilly"
+    },
+    {
+        "date": "2025-11-08",
+        "temperatureC": 5,
+        "temperatureF": 40,
+        "summary": "Hot"
+    },
+    {
+        "date": "2025-11-09",
+        "temperatureC": 29,
+        "temperatureF": 84,
+        "summary": "Sweltering"
+    },
+    {
+        "date": "2025-11-10",
+        "temperatureC": 2,
+        "temperatureF": 35,
+        "summary": "Chilly"
+    }
+]
+
+Follow the steps for adding the model folder and sample class.
+Follow the steps for adding the context and registering it in the Program.cs.
+I made some slight changes to the Context naming just to give a little bit of a wider usage beyond a single Model.
+
+Follow instructions for creating the TodoItemsController
+
+After following the steps to update the PostTodoItem and creating the sample request for it we are ready to run another test in postman
+This time the URL should be: https://localhost:7221/api/todoitems with a request type of POST, making sure the header for content-type is set to application/json
+The sample json provided for the request body is:
+
+{
+  "name": "walk dog",
+  "isComplete": true
+}
+
+When you send this request you can see the following in the console window indicating the request worked:
+info: Microsoft.EntityFrameworkCore.Update[30100]
+      Saved 1 entities to in-memory store.
+
+Interestingly, you can bypass the need for postman by following their instructions in the demo with sending the request via visual studio's built in .http file. Kind of nifty,
+but from what I have seen you tend to end up in postman anyway, so it is easier to iterate both sides of the fence at the same time so if anything breaks you know it right away.
+
+Also worth noting that Postman allows you to set variables for collections etc so we can pull out the base URL of https://localhost:7221 into a variable
+so our API calls are made to locations like {{basehttpsURL}}/api/todoitems instead of the full name. It makes it easier to keep them all updated if something changes
+
+We can also follow the instructions for testing out the GET methods as well, but since the information is held in memory for the walkthrough
+we must POST our data first before we can GET it
+
+We can continue along in the example and test out the update functionality of PutTodoItem. As the walkthrough states, it is expected by default that the entire entity
+be passed along for an update. Partial updates will yield a bad request.
+
+The sample instructions then go on to guide through a few steps for defining a DTO to only expose partial information about the object to the API caller
+The related code is updated in the project and functions as described, shielding the related field from entry and update or get visibility
+
+All told it is a really quick, but solid example of some of the different features available for C# API code that allows for the user
+to validate the way the code functions as well as ensure their request handling program (Visual Studio itself, Postman, or otherwise)
+can communicate with the solution or not. I would honestly say that as a crash course in API usage within VS and C# you could probably get
+the average prospective engineer to understand these fundamentals with this example within a very short amount of time.
