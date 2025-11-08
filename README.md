@@ -2,7 +2,7 @@
 Setting up a sample Rest API just to showcase some basic C#/Github knowledge.
 
 ## Walkthrough of steps to get to this point:
-Starting with the guide on [https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio]
+Starting with the guide on https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio
 
 Generally speaking, we'll follow the instructions inside the guide without a lot of deviation.
 Instead of primarily using the built-in *.http file Visual Studio provides I lean toward using Postman, but both work fine.
