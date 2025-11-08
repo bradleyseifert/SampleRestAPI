@@ -47,7 +47,7 @@ This gives the following default response information as of my sample run:
 ```
 
 After following the steps to update the PostTodoItem and creating the sample request for it we are ready to run another test in postman
-This time the URL should be: [https://localhost:7221/api/todoitems] with a request type of POST, making sure the header for content-type is set to application/json
+This time the URL should be: https://localhost:7221/api/todoitems with a request type of POST, making sure the header for content-type is set to application/json
 The sample json provided for the request body is:
 
 ```json
