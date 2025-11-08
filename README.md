@@ -1,7 +1,7 @@
 # SampleRestAPI
 Setting up a sample Rest API just to showcase some basic C#/Github knowledge.
 
-## Walkthrough of steps to get to this point:
+## Setting up the API code
 Starting with the guide on https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio
 
 Generally speaking, we'll follow the instructions inside the guide without a lot of deviation.
@@ -66,6 +66,12 @@ so our API calls are made to locations like {{basehttpsURL}}/api/todoitems inste
 
 We can also follow the instructions for testing out the GET methods as well, but since the information is held in memory for the walkthrough
 we must POST our data first before we can GET it.
+
+## Creation of the github repository
+Fairly self explanatory, but worth indicating that adding a Readme.md (this file) and a .gitignore allow for a lot of nice features within github.
+The readme does what you would expect and allows you to provide some quick documentation around necessary software, access, steps for building the solution, whatever you may need.
+
+The .gitignore allows you to keep from cluttering up your change logs with binary files or anything else you don't actually want replicated to github.
 
 All told it is a really quick, but solid example of some of the different features available for C# API code that allows for the user
 to validate the way the code functions as well as ensure their request handling program (Visual Studio itself, Postman, or otherwise)
