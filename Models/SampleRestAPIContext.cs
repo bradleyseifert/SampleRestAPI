@@ -10,6 +10,6 @@ namespace SampleRestAPI.Models
         {
         }
 
-        public DbSet<TodoItem> TodoItems { get; set; } = null!;
+        public DbSet<Customer> Customers { get; set; } = null!;
     }
 }
