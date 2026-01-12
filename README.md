@@ -30,7 +30,35 @@ The sample json provided for the request body is:
 
 ```json
 {
-  "name": "JOHN SMITH"
+  "name": "JOHN SMITH",
+  "Orders": [
+    {
+        "OrderNumber": 12345,
+        "ProductName": "Doodad"
+    },
+    {
+        "OrderNumber": 67890,
+        "ProductName": "Thingamajig"
+    }
+  ]
+}
+```
+
+Response for the above:
+```json
+{
+    "customerId": 1,
+    "name": "JOHN SMITH",
+    "orders": [
+        {
+            "orderNumber": 12345,
+            "productName": "Doodad"
+        },
+        {
+            "orderNumber": 67890,
+            "productName": "Thingamajig"
+        }
+    ]
 }
 ```
 
@@ -48,13 +76,22 @@ URL: {{basehttpsURL}}/api/customers
 Request Type: GET, making sure the header for content-type is set to application/json
 ```
 
-The sample json provided for the response body is:
-
+Response for the above:
 ```json
 [
     {
-        "id": 1,
-        "name": "JOHN SMITH"
+        "customerId": 1,
+        "name": "JOHN SMITH",
+        "orders": [
+            {
+                "orderNumber": 12345,
+                "productName": "Doodad"
+            },
+            {
+                "orderNumber": 67890,
+                "productName": "Thingamajig"
+            }
+        ]
     }
 ]
 ```

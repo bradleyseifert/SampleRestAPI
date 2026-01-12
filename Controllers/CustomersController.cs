@@ -20,6 +20,7 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult<IEnumerable<CustomersTDO>>> GetCustomers()
     {
         return await _context.Customers
+            .Include(c => c.Orders)
             .Select(x => CustomerToDTO(x))
             .ToListAsync();
     }
@@ -42,7 +43,7 @@ public class CustomersController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCustomer(long id, CustomersTDO customerTDO)
     {
-        if (id != customerTDO.Id)
+        if (id != customerTDO.CustomerId)
         {
             return BadRequest();
         }
@@ -54,6 +55,7 @@ public class CustomersController : ControllerBase
         }
 
         customer.Name = customerTDO.Name;
+        customer.Orders = customerTDO.Orders;
 
         try
         {
@@ -73,15 +75,27 @@ public class CustomersController : ControllerBase
     {
         var customer = new Customer
         {
-            Name = customerTDO.Name
+            Name = customerTDO.Name,
+            Orders = new List<Order>()
         };
+
+        if (customer.Orders != null)
+        {
+            foreach (var order in customerTDO?.Orders)
+            {
+                customer.Orders.Add(order);
+                //_context.Orders.Add(new Order { OrderNumber = order.OrderNumber, ProductName = order.ProductName});
+            }
+
+            //await _context.SaveChangesAsync();
+        }
 
         _context.Customers.Add(customer);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(
             nameof(GetCustomer),
-            new { id = customer.Id },
+            new { id = customer.CustomerId },
             CustomerToDTO(customer));
     }
 
@@ -103,13 +117,14 @@ public class CustomersController : ControllerBase
 
     private bool CustomerExists(long id)
     {
-        return _context.Customers.Any(e => e.Id == id);
+        return _context.Customers.Any(e => e.CustomerId == id);
     }
 
     private static CustomersTDO CustomerToDTO(Customer customer) =>
        new CustomersTDO
        {
-           Id = customer.Id,
-           Name = customer.Name
+           CustomerId = customer.CustomerId,
+           Name = customer.Name,
+           Orders = customer.Orders
        };
 }
