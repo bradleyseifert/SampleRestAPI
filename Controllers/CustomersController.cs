@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SampleRestAPI.Models;
+using SampleRestAPI.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using SampleRestAPI.Wrappers;
+using System.Linq;
 
 namespace SampleRestAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CustomersController : ControllerBase
+public class CustomersController : ICustomerRepository
 {
     private readonly SampleRestAPIContext _context;
 
@@ -17,7 +21,7 @@ public class CustomersController : ControllerBase
 
     // GET: api/Customers
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CustomersTDO>>> GetCustomers()
+    public async Task<List<Customer>> GetCustomersAsync()
     {
         return await _context.Customers
             .Include(c => c.Orders)
@@ -27,35 +31,36 @@ public class CustomersController : ControllerBase
 
     // GET: api/Customers/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<CustomersTDO>> GetCustomer(long id)
+    public async Task<CustomerResponse> GetCustomerByIdAsync(long id)
     {
-        var customer = await _context.Customers.FindAsync(id);
+        var customer = await _context.Customers.Include(c => c.Orders).FirstOrDefaultAsync(o => o.CustomerId == id);
 
         if (customer == null)
         {
-            return NotFound();
+            return new CustomerResponse { Message = "Not found" };
         }
 
-        return CustomerToDTO(customer);
+        return new CustomerResponse{ CustomerData = CustomerToDTO(customer) };
     }
 
     // PUT: api/Customers/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCustomer(long id, CustomersTDO customerTDO)
+    public async Task<CustomerResponse> UpdateCustomerAsync(long id, Customer customerInput)
     {
-        if (id != customerTDO.CustomerId)
+        if (id != customerInput.CustomerId)
         {
-            return BadRequest();
+            return new CustomerResponse { Message = "Bad Request" };
         }
 
-        var customer = await _context.Customers.FindAsync(id);
-        if (customer == null)
+        var customerResult = await _context.Customers.FindAsync(id);
+        if (customerResult == null)
         {
-            return NotFound();
+            return new CustomerResponse { Message = "Not found" };
         }
 
-        customer.Name = customerTDO.Name;
-        customer.Orders = customerTDO.Orders;
+        //Update values based on input
+        customerResult.Name = customerInput.Name;
+        customerResult.Orders = customerInput.Orders;
 
         try
         {
@@ -63,56 +68,55 @@ public class CustomersController : ControllerBase
         }
         catch (DbUpdateConcurrencyException) when (!CustomerExists(id))
         {
-            return NotFound();
+            return new CustomerResponse { Message = "Not found" };
         }
 
-        return NoContent();
+        return new CustomerResponse { CustomerData = customerResult, Message = "Success" };
     }
 
     // POST: api/Customers
     [HttpPost]
-    public async Task<ActionResult<CustomersTDO>> PostCustomer(CustomersTDO customerTDO)
+    public async Task<CustomerResponse> AddCustomerAsync(Customer customerInput)
     {
         var customer = new Customer
         {
-            Name = customerTDO.Name,
+            Name = customerInput.Name,
             Orders = new List<Order>()
         };
 
         if (customer.Orders != null)
         {
-            foreach (var order in customerTDO?.Orders)
-            {
-                customer.Orders.Add(order);
-                //_context.Orders.Add(new Order { OrderNumber = order.OrderNumber, ProductName = order.ProductName});
-            }
-
-            //await _context.SaveChangesAsync();
+            customer.Orders.AddRange(from order in customerInput?.Orders
+                                     select order);
         }
 
         _context.Customers.Add(customer);
         await _context.SaveChangesAsync();
 
+        return new CustomerResponse { CustomerData = customer, Message = "Success" };
+
+        /*
         return CreatedAtAction(
             nameof(GetCustomer),
             new { id = customer.CustomerId },
             CustomerToDTO(customer));
+        */
     }
 
     // DELETE: api/Customers/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCustomer(long id)
+    public async Task<CustomerResponse> DeleteCustomerAsync(long id)
     {
         var customer = await _context.Customers.FindAsync(id);
         if (customer == null)
         {
-            return NotFound();
+            return new CustomerResponse { Message = "Not found" };
         }
 
         _context.Customers.Remove(customer);
         await _context.SaveChangesAsync();
 
-        return NoContent();
+        return new CustomerResponse { CustomerData = customer, Message = "Success" };
     }
 
     private bool CustomerExists(long id)
@@ -120,8 +124,8 @@ public class CustomersController : ControllerBase
         return _context.Customers.Any(e => e.CustomerId == id);
     }
 
-    private static CustomersTDO CustomerToDTO(Customer customer) =>
-       new CustomersTDO
+    private static Customer CustomerToDTO(Customer customer) =>
+       new Customer
        {
            CustomerId = customer.CustomerId,
            Name = customer.Name,
