@@ -1,16 +1,7 @@
 # SampleRestAPI
-Setting up a sample Rest API just to showcase some basic C#/Github knowledge.
-
-## Initial Guide
-
-Starting with the guide on https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-9.0&tabs=visual-studio
-
-Instead of primarily using the built-in *.http file Visual Studio provides I lean toward using Postman, but both work fine.
-In my experience you end up in Postman eventually anyway, so I find it easier to start with and maintain.
+Sample Rest API with Entity Framework Core, In-Memory Database, Mocking, and Unit Tests
 
 ## Running the project
-I've deviated some from the API walkthrough in order to create customers and orders as a more real world scenario.
-
 **Since we use an in-memory database we need to create our data at the start of any sample run.**
 
 Postman allows you to set variables for collections etc so now that we have multiple requests we can pull out the base URL of https://localhost:7221 into a variable
