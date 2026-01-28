@@ -10,4 +10,3 @@ so our API calls are made to locations like {{basehttpsURL}}/api/customers inste
 ## Sample API calls
 
 For an interactive UI with sample API calls, check the Swagger UI at: https://localhost:7221/swagger/index.html
-```
