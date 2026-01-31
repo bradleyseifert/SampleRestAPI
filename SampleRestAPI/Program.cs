@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SampleRestAPI.Interfaces;
 using SampleRestAPI.Models;
 using SampleRestAPI.Repositories;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<SampleRestAPIContext>(opt =>
     opt.UseInMemoryDatabase("SampleRestAPI"));
+
+builder.Services.AddMemoryCache();
 
 // Repository registration
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
