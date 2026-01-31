@@ -28,9 +28,9 @@ public class CustomersController : ControllerBase
     /// <returns>An asynchronous operation that returns the list of all customers. Collection is empty if no customers are found.</returns>
     // Request: GET: api/Customers
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+    public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers(CancellationToken cancellationToken)
     {
-        var items = await _repo.GetCustomersAsync();
+        var items = await _repo.GetCustomersAsync(cancellationToken);
         return Ok(items);
     }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SampleRestAPI.Interfaces;
 using SampleRestAPI.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace SampleRestAPI.Repositories
 {
@@ -16,22 +17,50 @@ namespace SampleRestAPI.Repositories
     public class CustomerRepository : ICustomerRepository
     {
         private readonly SampleRestAPIContext _context;
+        private readonly IMemoryCache _cache;
+        private const string CustomersCacheKey = "customers:customers";
 
-        public CustomerRepository(SampleRestAPIContext context)
+        public CustomerRepository(SampleRestAPIContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         /// <summary>
         /// Asynchronously retrieves a list of customers, including their associated orders.
         /// </summary>
         /// <returns>A list of customers with their orders included. The list is empty if no customers are found.</returns>
-        public async Task<List<Customer>> GetCustomersAsync()
+        public async Task<List<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.Customers
-                .Include(c => c.Orders)
-                .Select(x => CustomerToDTO(x))
-                .ToListAsync();
+            if (_cache.TryGetValue(CustomersCacheKey, out var cachedObj) && cachedObj is List<Customer> cached)
+            {
+                if (cached != null)
+                {
+                    return cached;
+                }
+                else
+                {
+                    return new List<Customer>();
+                }
+            }
+            else
+            {
+                var data = await _context.Customers
+                    .Include(c => c.Orders)
+                    .Select(x => CustomerToDTO(x))
+                    .ToListAsync(cancellationToken);
+
+                var cacheOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20),
+                    SlidingExpiration = TimeSpan.FromSeconds(10),
+                    Size = 1 // if you configured a size limit
+                };
+
+                _cache.Set(CustomersCacheKey, data, cacheOptions);
+
+                return data;
+            }
         }
 
         /// <summary>

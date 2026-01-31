@@ -26,7 +26,7 @@ public class CustomerControllerTests
         var controller = new CustomersController(mockRepo.Object);
 
         // Act
-        var result = await controller.GetCustomers();
+        var result = await controller.GetCustomers(new CancellationToken());
 
         // Assert
         var okResult = Xunit.Assert.IsType<OkObjectResult>(result.Result);
