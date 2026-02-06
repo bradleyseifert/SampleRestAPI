@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SampleRestAPI.Interfaces;
 using SampleRestAPI.Models;
 
@@ -13,6 +14,7 @@ namespace SampleRestAPI.Controllers;
 /// interface.</remarks>
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CustomersController : ControllerBase
 {
     private readonly ICustomerRepository _repo;
